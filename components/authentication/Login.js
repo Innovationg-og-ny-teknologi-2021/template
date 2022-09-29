@@ -9,8 +9,8 @@ import {AppContext} from "../AppContext";
 function Login({navigation}) {
     const [globalUser, setGlobalUser] = useContext(AppContext)
     const height = useWindowDimensions().height
-    const [username, setUsername] = useState("jhs.digi@cbs.dk");
-    const [password, setPassword] = useState("jhs123");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
     const navController = (navigation, route) =>{
         navigation.navigate(route)
@@ -24,9 +24,10 @@ function Login({navigation}) {
                 .database()
                 .ref('/users')
                 .on('value', snapshot => {
-                   const userAndKeys = Object.entries(snapshot.val())
-                   const user = userAndKeys.find(item => item[1].username = username)
-                    console.log()
+                    if (snapshot.val()) {
+                        const userAndKeys = Object.entries(snapshot.val())
+                        const user = userAndKeys.find(item => item[1].username === username)
+                        console.log(user)
                    setGlobalUser({
                        id: user[0],
                        birtDate: user[1].birtDate,
@@ -37,6 +38,8 @@ function Login({navigation}) {
                        username: user[1].username,
                        countries: Object.keys(user[1]).includes('countries') ? user[1].countries : []
                    })
+                    }
+
                 });
         } catch (error){
             console.log(error.message)

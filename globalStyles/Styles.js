@@ -22,6 +22,17 @@ const Styles = StyleSheet.create({
         borderRadius: 5,
         borderWidth: 1,
     },
+    inputV2: {
+        width: 200,
+        height: 44,
+        padding: 10,
+        borderColor: 'black',
+        marginBottom: 10,
+        borderRadius: 5,
+        borderWidth: 0,
+        borderBottomWidth: 1,
+        borderBottomColor: 'black'
+    },
     btnAuth: {
         display: 'flex',
         alignItems: 'center',

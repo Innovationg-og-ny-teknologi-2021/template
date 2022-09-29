@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import Styles from "../../globalStyles/Styles";
-import {StatusBar} from "expo-status-bar";
 import {useContext, useState} from "react";
 import firebase from "firebase/compat";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -61,7 +60,6 @@ function SignUp({navigation}) {
 * setErrorMessage, angiver værdien for state-variablen, errormessage
 */
     const handleSubmit = async() => {
-        const key = firebase.database().ref().child('users').push().key;
         const user = createUser()
             try {
                 await firebase.auth().createUserWithEmailAndPassword(username, password);
@@ -93,14 +91,14 @@ function SignUp({navigation}) {
                 <TextInput
                     value={firstname}
                     onChangeText={(firstname) => setFirstname( firstname )}
-                    placeholder={'First firstname'}
-                    style={{...Styles.input, borderWidth: 0, borderBottomWidth: 1, borderBottomColor: 'black'}}
+                    placeholder={'Firstname'}
+                    style={Styles.inputV2}
                 />
                 <TextInput
                     value={lastname}
                     onChangeText={(lastname) => setLastname( lastname )}
-                    placeholder={'First firstname'}
-                    style={{...Styles.input, borderWidth: 0, borderBottomWidth: 1, borderBottomColor: 'black'}}
+                    placeholder={'Lastname'}
+                    style={Styles.inputV2}
                 />
                 <Pressable style={Styles.btnCalender} title="Pick Birthdate" onPress={showDatePicker}>
                 <AntDesign name="calendar" size={24} color="black" />
@@ -117,14 +115,14 @@ function SignUp({navigation}) {
                 value={username}
                 onChangeText={(username) => setUsername( username )}
                 placeholder={'Username'}
-                style={{...Styles.input, borderWidth: 0, borderBottomWidth: 1, borderBottomColor: 'black'}}
+                style={Styles.inputV2}
             />
             <TextInput
                 value={password}
                 onChangeText={(password) => setPassword(password)}
                 placeholder={'Create password'}
                 secureTextEntry={true}
-                style={{...Styles.input, borderWidth: 0, borderBottomWidth: 1, borderBottomColor: 'black'}}
+                style={Styles.inputV2}
             />
             <Pressable
                 title={'Sign Up'}
