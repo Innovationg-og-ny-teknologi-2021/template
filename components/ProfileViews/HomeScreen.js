@@ -1,4 +1,14 @@
-import {View, Text, TextInput, Pressable, TouchableOpacity, StyleSheet, Alert, useWindowDimensions} from "react-native";
+import {
+    View,
+    Text,
+    TextInput,
+    Pressable,
+    TouchableOpacity,
+    StyleSheet,
+    Alert,
+    useWindowDimensions,
+    ActivityIndicator
+} from "react-native";
 import Styles from "../../globalStyles/Styles";
 import {AppContext} from "../AppContext";
 import React, {useContext, useState} from "react";
@@ -104,50 +114,52 @@ function HomeScreen() {
         await firebase.auth().signOut()
     };
 
-    return (
-        <View style={{...Styles.container, justifyContent: 'flex-start'}}>
-            <Text style={{...Styles.title, marginBottom: 0, marginTop: 100}}>Profile Page!</Text>
-            <View style={{margin: 10}}>
-                <View style={Styles.circle}><MaterialIcons
-                    name="face"
-                    size={50} color="black"/></View>
+    if (globalUser.username != null) {
+        return (
+            <View style={{...Styles.container, justifyContent: 'flex-start'}}>
+                <Text style={{...Styles.title, marginBottom: 0, marginTop: 100}}>Profile Page!</Text>
+                <View style={{margin: 10}}>
+                    <View style={Styles.circle}><MaterialIcons
+                        name="face"
+                        size={50} color="black"/></View>
+                </View>
+                <DetailsComponent globalUser={globalUser}/>
+                <Buttons onPress={() => setProfileModalVisibility(true)}
+                         onPress1={() => setCredentialsModalVisibility(true)}
+                         onPress2={() => handleLogOut()}/>
+
+                <ModalProfile minHeight={height}
+                              visible={isVisibleModalProfile}
+                              value={newFirstname}
+                              globalUser={globalUser}
+                              onChangeText={(firstname) => setNewFirstname(firstname)}
+                              value1={newLastname}
+                              onChangeText1={(lastname) => setNewLastname(lastname)}
+                              prop7={() => setShowDatePicker(true)}
+                              day={day}
+                              month={month}
+                              year={year}
+                              visible1={showDatePicker}
+                              onConfirm={handleConfirm}
+                              onCancel={() => setShowDatePicker(false)}
+                              onPress={() => setProfileModalVisibility(false)}
+                              onPress1={() => updateUser()}/>
+
+
+                <CredentialsComponent minHeight={height}
+                                      visible={isVisibleModalCredentials}
+                                      globalUser={globalUser}
+                                      value={oldPassword}
+                                      onChangeText={(oldPassword) => setOldPassword(oldPassword)}
+                                      value1={password}
+                                      onChangeText1={(newPass) => setNewPassword(newPass)}
+                                      onPress={() => setCredentialsModalVisibility(false)}
+                                      onPress1={() => updateCredentials()}/>
+
+
             </View>
-            <DetailsComponent globalUser={globalUser}/>
-            <Buttons onPress={() => setProfileModalVisibility(true)}
-                     onPress1={() => setCredentialsModalVisibility(true)}
-                     onPress2={() => handleLogOut()}/>
-
-            <ModalProfile minHeight={height}
-                          visible={isVisibleModalProfile}
-                          value={newFirstname}
-                          globalUser={globalUser}
-                          onChangeText={(firstname) => setNewFirstname(firstname)}
-                          value1={newLastname}
-                          onChangeText1={(lastname) => setNewLastname(lastname)}
-                          prop7={() => setShowDatePicker(true)}
-                          day={day}
-                          month={month}
-                          year={year}
-                          visible1={showDatePicker}
-                          onConfirm={handleConfirm}
-                          onCancel={() => setShowDatePicker(false)}
-                          onPress={() => setProfileModalVisibility(false)}
-                          onPress1={() => updateUser()}/>
-
-
-            <CredentialsComponent minHeight={height}
-                                  visible={isVisibleModalCredentials}
-                                  globalUser={globalUser}
-                                  value={oldPassword}
-                                  onChangeText={(oldPassword) => setOldPassword(oldPassword)}
-                                  value1={password}
-                                  onChangeText1={(newPass) => setNewPassword(newPass)}
-                                  onPress={() => setCredentialsModalVisibility(false)}
-                                  onPress1={() => updateCredentials()}/>
-
-
-        </View>
-    );
+        );
+    } else return <View style={Styles.container} ><ActivityIndicator size="large" color="#0000ff" /><Text>Loading</Text></View>
 }
 
 

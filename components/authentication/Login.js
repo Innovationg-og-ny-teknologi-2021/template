@@ -26,8 +26,7 @@ function Login({navigation}) {
                 .on('value', snapshot => {
                     if (snapshot.val()) {
                         const userAndKeys = Object.entries(snapshot.val())
-                        const user = userAndKeys.find(item => item[1].username === username)
-                        console.log(user)
+                        const user = userAndKeys.find(item => (item[1].username).toUpperCase() === username.toUpperCase())
                    setGlobalUser({
                        id: user[0],
                        birtDate: user[1].birtDate,
