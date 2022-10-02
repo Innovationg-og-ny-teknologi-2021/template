@@ -1,11 +1,8 @@
 import {
     Text,
     TextInput,
-    TouchableOpacity,
     useWindowDimensions,
     View,
-    StyleSheet,
-    Button,
     Pressable
 } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
@@ -16,7 +13,9 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {formatDayOrMonth} from "../helperFunctions";
 import {AppContext} from "../AppContext";
 
+
 function SignUp({navigation}) {
+//Instatering af relevante statevaribler.Bidm mærke i måden hvorpå man henter en global bruger, defineret i vores AppContext.
     const [globalUser, setGlobalUser] = useContext(AppContext)
     const height = useWindowDimensions().height
     const [day, setDay] = useState("");
@@ -28,23 +27,29 @@ function SignUp({navigation}) {
     const [password, setPassword] = useState("");
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-
+    // Comtroller til at styre navigering mellem sider i stacknavigator.
     const navController = (navigation, route) =>{
         navigation.navigate(route)
     }
+
+    // Comtroller til at styre fremvisning af datePicker komponent .
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
     };
 
+    // Comtroller til at styre fremvisning af datePicker komponent .
     const hideDatePicker = () => {
         setDatePickerVisibility(false);
     };
+
+    // Hjælper metode til at populerer felter koblet til den globale bruger
     const createUser = () => {
         return {birtDate: day, birthMonth: month, birthYear: year, firstname: firstname, lastname: lastname, username: username }
     }
 
 
+    // Opdaterer alle statevariabler, som relaterer sig til datoer
     const handleConfirm = (date) => {
         setDay(date.getDate())
         setMonth((date.getMonth())+1)
@@ -54,10 +59,9 @@ function SignUp({navigation}) {
 
 
 /*
-* Metoden herunder håndterer oprettelse af brugere ved at anvende den prædefinerede metode, som stilles til rådighed af firebase
+* Metoden herunder håndterer oprettelse af brugere ved at anvende en prædefineret firebase metode
 * signInWithEmailAndPassword tager en mail og et password med som argumenter og foretager et asynkront kald, der eksekverer en brugeroprettelse i firebase
-* Opstår der fejl under forsøget på oprettelse, vil der i catch blive fremsat en fejlbesked, som, ved brug af
-* setErrorMessage, angiver værdien for state-variablen, errormessage
+* Til sidst populeres felterne for den globale bruger med de indtastede oplysningerne i formularen
 */
     const handleSubmit = async() => {
         const user = createUser()
@@ -80,10 +84,13 @@ function SignUp({navigation}) {
                 })
 
             } catch (error) {
+                //Error handling er ikke implementeret
+
                 console.log(`Error: ${error.message}`);
             }
     }
 
+    //Layout af app
     return (
         <View style={{...Styles.container, minHeight: height, borderWidth: 1, textAlign: 'center' }}>
             <View style={Styles.subContainer} >
@@ -145,9 +152,3 @@ function SignUp({navigation}) {
 }
 export default SignUp
 
-const stylesLocal = StyleSheet.create({
-    datePickerStyle: {
-        width: 200,
-        marginTop: 20,
-    }
-});

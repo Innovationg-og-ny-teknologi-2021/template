@@ -7,16 +7,23 @@ import {AppContext} from "../AppContext";
 
 
 function Login({navigation}) {
+//Instantiering af statevariabler til brug i appen
     const [globalUser, setGlobalUser] = useContext(AppContext)
     const height = useWindowDimensions().height
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-
+ // Comtroller til at styre navigering mellem sider i stacknavigator.
     const navController = (navigation, route) =>{
         navigation.navigate(route)
     }
 
-
+    /*
+    * Handlesubmit.
+    * 1. Først forsøges login ved brug af en prædefineret sign-in metode, der modtager to arguemnter; email og password
+    * 2. Dernæst foretages et kald til en tilkoblede realtime database.
+    *    Metoden henter alle brugere og leder efter den bruger, som har en email tilsvarende til den mailadresse, som er gemt i email-variablen
+    *    Når brugeren er fundet, hentes alle de dertilhørende oplysninger, hvorefter disse gemmes i den globale brugervariabel.
+    * */
     const handleSubmit = async () => {
         try {
             await firebase.auth().signInWithEmailAndPassword(username, password);
@@ -41,10 +48,12 @@ function Login({navigation}) {
 
                 });
         } catch (error){
+            //Error handling er ikke implementeret
             console.log(error.message)
         }
     }
 
+    //Layout af app
     return (
         <View style={{...Styles.container, minHeight: height}}>
             <View style={Styles.subContainer} >
