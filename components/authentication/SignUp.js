@@ -121,7 +121,7 @@ function SignUp({navigation}) {
             <TextInput
                 value={username}
                 onChangeText={(username) => setUsername( username )}
-                placeholder={'Username'}
+                placeholder={'E-Mail'}
                 style={Styles.inputV2}
             />
             <TextInput
